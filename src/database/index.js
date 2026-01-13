@@ -4,6 +4,7 @@ import databaseConfig from '../config/database.cjs';
 import User from '../app/models/User.js';
 import Product from '../app/models/Product.js';
 import Category from '../app/models/Category.js';
+import 'dotenv/config';
 
 const models = [User, Product, Category];
 class Database {
