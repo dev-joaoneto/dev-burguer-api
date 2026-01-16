@@ -12,7 +12,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/product-file', fileRouteConfig);
 app.use('/category-file', fileRouteConfig);
 
-app.use(cors());
+app.use(cors({
+    origin: process.env.CORS_ORIGIN,
+}));
 
 app.use(routes);
 
