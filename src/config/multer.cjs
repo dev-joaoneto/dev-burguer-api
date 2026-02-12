@@ -1,13 +1,21 @@
-const  multer  = require('multer');
-const { resolve } = require('node:path');
-const { v4 } = require('uuid');
+const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('./cloudinary');
 
-module.exports = {
-	storage: multer.diskStorage({
-		destination: resolve(__dirname, '..', '..', 'uploads'),
-		filename: (_request, file, callback) => {
-			const uniqueName = v4().concat(`-${file.originalname}`);
-            return callback(null, uniqueName);
-		},
-	}),
-};
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'uploads',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+    public_id: (_req, file) => {
+      const fileName = file.originalname
+        .split('.')[0]
+        .replace(/\s+/g, '-')
+        .toLowerCase();
+
+      return `${Date.now()}-${fileName}`;
+    },
+  },
+});
+
+module.exports = multer({ storage });

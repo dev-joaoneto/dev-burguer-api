@@ -5,13 +5,8 @@ class Category extends Model {
 		super.init(
 			{
 				name: Sequelize.STRING,
-				path: Sequelize.STRING,
-				url: {
-					type: Sequelize.VIRTUAL,
-					get() {
-						return `http://localhost:3001/category-file/${this.path}`;
-					},
-				},
+				image_url: Sequelize.STRING,
+				public_id: Sequelize.STRING,
 			},
 			{
 				sequelize,
@@ -21,7 +16,7 @@ class Category extends Model {
 
 		return this;
 	}
-	
+
 }
 
 export default Category;
