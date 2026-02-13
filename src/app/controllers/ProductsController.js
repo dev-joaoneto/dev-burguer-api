@@ -17,18 +17,14 @@ class ProductsController {
 			return response.status(400).json({ error: err.errors });
 		}
 
-		if (!request.file) {
-			return response.status(400).json({ error: 'Image is required' });
-		}
-
 		const { name, price, category_id, offer } = request.body;
-		const imageUrl = request.file.path;
+		const { filename } = request.file;
 
 		const newProduct = await Product.create({
 			name,
 			price,
 			category_id,
-			path: imageUrl,
+			path: filename,
 			offer,
 		});
 
@@ -49,22 +45,25 @@ class ProductsController {
 			return response.status(400).json({ error: err.errors });
 		}
 
-		const { id } = request.params;
 		const { name, price, category_id, offer } = request.body;
+		const { id } = request.params;
 
-		const updateData = {
+		let path
+		if (request.file) {
+			const { filename } = request.file;
+			path = filename;
+		}
+
+		await Product.update({
 			name,
 			price,
 			category_id,
+			path,
 			offer,
-		};
-
-		if (request.file) {
-			updateData.path = request.file.path;
-		}
-
-		await Product.update(updateData, {
-			where: { id },
+		}, {
+			where: {
+				id
+			},
 		});
 
 		return response.status(201).json();
@@ -76,7 +75,7 @@ class ProductsController {
 				{
 					model: Category,
 					as: 'category',
-					attributes: ['id', 'name'],
+					attributes: ['id','name'],
 				},
 			],
 		});
