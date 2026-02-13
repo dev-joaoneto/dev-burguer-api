@@ -60,7 +60,7 @@ class ProductsController {
 		};
 
 		if (request.file) {
-			updateData.path = request.file.path; 
+			updateData.path = request.file.path;
 		}
 
 		await Product.update(updateData, {
