@@ -22,6 +22,8 @@ class ProductsController {
 			return response.status(400).json({ error: 'Image is required' });
 		}
 
+		const { name, price, category_id, offer } = request.body;
+
 		const categoryExists = await Category.findByPk(category_id);
 
 		if (!categoryExists) {
@@ -29,10 +31,6 @@ class ProductsController {
 				error: 'Category does not exist',
 			});
 		}
-
-
-		const { name, price, category_id, offer } = request.body;
-
 		const result = await cloudinary.uploader.upload(request.file.path, {
 			folder: 'products',
 		});
