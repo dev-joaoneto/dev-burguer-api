@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 import Product from './../models/Product.js';
 import Category from './../models/Category.js';
+import cloudinary from './../../config/cloudinary.js';
 
 class ProductsController {
 	async store(request, response) {
@@ -22,14 +23,18 @@ class ProductsController {
 		}
 
 		const { name, price, category_id, offer } = request.body;
-		const imageUrl = request.file.path;
+
+		const result = await cloudinary.uploader.upload(request.file.path, {
+			folder: 'products',
+		});
 
 		const newProduct = await Product.create({
 			name,
 			price,
 			category_id,
-			path: imageUrl,
 			offer,
+			image_url: result.secure_url,
+			public_id: result.public_id,
 		});
 
 		return response.status(201).json(newProduct);
@@ -52,6 +57,11 @@ class ProductsController {
 		const { id } = request.params;
 		const { name, price, category_id, offer } = request.body;
 
+		const product = await Product.findByPk(id);
+		if (!product) {
+			return response.status(404).json({ error: 'Product not found' });
+		}
+
 		const updateData = {
 			name,
 			price,
@@ -60,7 +70,17 @@ class ProductsController {
 		};
 
 		if (request.file) {
-			updateData.path = request.file.path; // 🔥 nova URL
+			// 🔥 remove imagem antiga
+			if (product.public_id) {
+				await cloudinary.uploader.destroy(product.public_id);
+			}
+
+			const result = await cloudinary.uploader.upload(request.file.path, {
+				folder: 'products',
+			});
+
+			updateData.image_url = result.secure_url;
+			updateData.public_id = result.public_id;
 		}
 
 		await Product.update(updateData, {
