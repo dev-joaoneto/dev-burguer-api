@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import Category from '../models/Category.js';
+import cloudinary from '../../config/cloudinary.js';
 
 class CategoryController {
 	async store(request, response) {
@@ -14,21 +15,29 @@ class CategoryController {
 		}
 
 		const { name } = request.body;
-		const { filename } = request.file;
+
+		if (!request.file) {
+			return response.status(400).json({ error: 'Image is required' });
+		}
 
 		const existingCategory = await Category.findOne({
-			 where: {
-				 name
-				} 
-			});
+			where: {
+				name
+			}
+		});
 
 		if (existingCategory) {
 			return response.status(400).json({ error: 'Category already exists' });
 		}
 
+		const result = await cloudinary.uploader.upload(request.file.path, {
+			folder: 'categories',
+		});
+
 		const newCategory = await Category.create({
 			name,
-			path: filename,
+			image_url: result.secure_url,
+			public_id: result.public_id,
 		});
 
 		return response.status(201).json(newCategory);
@@ -47,18 +56,37 @@ class CategoryController {
 
 		const { name } = request.body;
 		const { id } = request.params;
-		
-		let path
-		if (request.file) {
-			const { filename } = request.file;
-			path = filename;
+
+		const category = await Category.findByPk(id);
+
+		if (!category) {
+			return response.status(404).json({ error: 'Category not found' });
 		}
 
-		
+		let image_url = category.image_url;
+		let public_id = category.public_id;
+
+		if (request.file) {
+			// remove imagem antiga
+			if (public_id) {
+				await cloudinary.uploader.destroy(public_id);
+			}
+
+			// upload nova imagem
+			const result = await cloudinary.uploader.upload(request.file.path, {
+				folder: 'categories',
+			});
+
+			image_url = result.secure_url;
+			public_id = result.public_id;
+		}
+
+
 
 		await Category.update({
 			name,
-			path,
+			image_url,
+			public_id,
 		}, {
 			where: {
 				id
