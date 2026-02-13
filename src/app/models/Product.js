@@ -6,9 +6,14 @@ class Product extends Model {
 			{
 				name: Sequelize.STRING,
 				price: Sequelize.INTEGER,
-				image_url: Sequelize.STRING,
-				public_id: Sequelize.STRING,
+				path: Sequelize.STRING,
 				offer: Sequelize.BOOLEAN,
+				url: {
+					type: Sequelize.VIRTUAL,
+					get() {
+						return `https://dev-burguer-backend.xgg4n8.easypanel.host/product-file/${this.path}`;
+					},
+				},
 			},
 			{
 				sequelize,
