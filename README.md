@@ -65,3 +65,27 @@ O projeto foi pensado com foco em boas práticas, escalabilidade, segurança e d
 - Cálculo de valor no backend (segurança contra fraude)
 
 - Confirmação de pagamento no frontend
+
+🐳 Docker & Deploy
+
+- Build automatizado via Dockerfile
+
+- Deploy em VPS usando EasyPanel
+
+- Zero-downtime deploy
+
+- Configuração pronta para produção
+
+🎯 Funcionalidades
+
+- Autenticação de usuários
+
+- CRUD de categorias e produtos
+
+- Upload de imagens
+
+- Criação de pedidos
+
+- Integração com pagamentos online
+
+Persistência híbrida (SQL + NoSQL)
