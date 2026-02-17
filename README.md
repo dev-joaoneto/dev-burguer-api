@@ -1,29 +1,67 @@
-# 🍔 Dev & Grill – Backend API
+🍔 Dev & Grill – Backend API
 
-Backend da aplicação **Dev & Grill**, responsável por gerenciar autenticação, usuários, produtos, categorias, pedidos e pagamentos.  
-A API foi construída seguindo padrões REST e boas práticas de organização e segurança.
+API REST profissional para e-commerce com pagamentos online
 
----
+📌 Visão Geral
 
-## 🚀 Tecnologias Utilizadas
+O Dev & Grill Backend é uma API REST desenvolvida para sustentar uma aplicação completa de e-commerce, contemplando autenticação, gestão de produtos, pedidos, pagamentos online e persistência híbrida de dados.
 
-- **Node.js**
-- **Express**
-- **PostgreSQL** (dados relacionais)
-- **MongoDB** (dados complementares)
-- **Sequelize** (ORM)
-- **JWT** (Autenticação)
-- **Stripe** (Pagamentos)
-- **Multer** (Upload de imagens)
-- **Docker**
-- **EasyPanel** (Deploy)
+O projeto foi pensado com foco em boas práticas, escalabilidade, segurança e deploy em ambiente real, sendo utilizado como projeto de portfólio full stack.
 
----
+🧠 Principais Decisões Técnicas
 
-## 🧱 Arquitetura
+- Arquitetura REST bem definida
 
-- API REST
-- Separação por camadas (controllers, services, models)
-- Autenticação baseada em token (JWT)
-- Integração com gateway de pagamento
-- Persistência híbrida (Postgres + Mongo)
+- Separação de responsabilidades (controllers, models, services)
+
+- Autenticação JWT stateless
+
+- Banco relacional (PostgreSQL) para dados críticos
+
+- Banco NoSQL (MongoDB) para dados auxiliares
+
+- Gateway de pagamento Stripe
+
+- Deploy em VPS usando Docker + EasyPanel
+
+🛠️ Stack Tecnológica
+
+- Node.js
+
+- Express
+
+- Sequelize (ORM)
+
+- PostgreSQL
+
+- MongoDB
+
+- JWT
+
+- Stripe API
+
+- Multer (upload de arquivos)
+
+- Docker
+
+- EasyPanel
+
+🔐 Autenticação & Segurança
+
+- Login com geração de JWT
+
+- Middleware de autenticação para rotas protegidas
+
+- Validação de dados com Yup
+
+- Controle de CORS configurável por ambiente
+
+💳 Pagamentos
+
+- Integração completa com Stripe
+
+- Criação de PaymentIntent
+
+- Cálculo de valor no backend (segurança contra fraude)
+
+- Confirmação de pagamento no frontend
