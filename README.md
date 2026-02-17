@@ -88,4 +88,4 @@ O projeto foi pensado com foco em boas práticas, escalabilidade, segurança e d
 
 - Integração com pagamentos online
 
-Persistência híbrida (SQL + NoSQL)
+- Persistência híbrida (SQL + NoSQL)
